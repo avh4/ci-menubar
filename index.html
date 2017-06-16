@@ -1,1 +1,15 @@
 <b>Hi!</b>
+<div id="div"></div>
+<script>
+console.log("menubar window");
+var div = document.getElementById("div");
+var textnode = document.createTextNode("Data");
+div.appendChild(textnode);
+
+const { ipcRenderer } = require("electron");
+
+ipcRenderer.on("jenkins-projects-reply", (event, arg) => {
+  console.log(arg);
+});
+ipcRenderer.send("jenkins-projects");
+</script>
