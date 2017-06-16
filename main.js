@@ -13,7 +13,8 @@ const { BrowserWindow, app } = require("electron");
 //
 
 app.on("ready", function() {
-  showOAuth();
+  // showOAuth();
+  fetchProjects();
 });
 
 function showOAuth() {
@@ -58,13 +59,18 @@ function showOAuth() {
   );
 }
 
-//
-// var ci = jenkins.init("https://jenkins.noredink.com");
-//
-// ci.all_jobs(function(err, data) {
-//   console.log(err, data);
-// });
-//
+function fetchProjects() {
+  var user = "";
+  var token = "";
+  var ci = jenkins.init(
+    "https://" + user + ":" + token + "@jenkins.noredink.com"
+  );
+
+  ci.all_jobs(function(err, data) {
+    console.log(err, data);
+  });
+}
+
 // mb.on('ready', function ready () {
 //   console.log('app is ready')
 //   console.log(mb.getOption('index'));
