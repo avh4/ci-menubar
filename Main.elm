@@ -1,6 +1,7 @@
 port module Main exposing (main)
 
-import Html
+import Html exposing (Html)
+import Html.Events
 
 
 type alias Model =
@@ -10,6 +11,7 @@ type alias Model =
 
 type alias JenkinsProject =
     { name : String
+    , url : String
     }
 
 
@@ -21,6 +23,7 @@ initialModel =
 
 type Msg
     = NewJenkinsProjects (List JenkinsProject)
+    | OpenExternal String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -31,6 +34,25 @@ update msg model =
             , Cmd.none
             )
 
+        OpenExternal url ->
+            ( model
+            , openExternal url
+            )
+
+
+viewProject : JenkinsProject -> Html Msg
+viewProject project =
+    Html.li []
+        [ Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+            [ Html.text project.name
+            ]
+        ]
+
+
+view : Model -> Html Msg
+view model =
+    Html.ul [] (List.map viewProject model.jenkinsProjects)
+
 
 main : Program Never Model Msg
 main =
@@ -38,8 +60,11 @@ main =
         { init = ( initialModel, Cmd.none )
         , update = update
         , subscriptions = \model -> jenkinsProjects NewJenkinsProjects
-        , view = \model -> Html.text <| toString model
+        , view = view
         }
 
 
 port jenkinsProjects : (List JenkinsProject -> msg) -> Sub msg
+
+
+port openExternal : String -> Cmd msg

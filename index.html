@@ -1,12 +1,21 @@
 <body>
 <script>
 const path = require("path");
+const { shell, ipcRenderer } = require("electron");
+
+// Start Elm
+
 const Elm = require(path.resolve("elm.js"));
 const app = Elm.Main.fullscreen();
 
-const { ipcRenderer } = require("electron");
+app.ports.openExternal.subscribe(function(url) {
+  shell.openExternal(url);
+});
+
+// Connect with main process
 
 ipcRenderer.on("jenkins-projects-reply", (event, data) => {
+  console.log(data);
   app.ports.jenkinsProjects.send(data);
 });
 
