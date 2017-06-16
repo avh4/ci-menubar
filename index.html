@@ -3,13 +3,15 @@
 <script>
 console.log("menubar window");
 var div = document.getElementById("div");
-var textnode = document.createTextNode("Data");
-div.appendChild(textnode);
 
 const { ipcRenderer } = require("electron");
 
 ipcRenderer.on("jenkins-projects-reply", (event, arg) => {
   console.log(arg);
+  arg.forEach(function(project) {
+    var textnode = document.createTextNode(project.name);
+    div.appendChild(textnode);
+  });
 });
 ipcRenderer.send("jenkins-projects");
 </script>
