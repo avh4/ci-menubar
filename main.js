@@ -27,6 +27,35 @@ function showOAuth() {
   var authUrl = "https://jenkins.noredink.com";
   authWindow.loadURL(authUrl);
   authWindow.show();
+
+  function handleCallback(url) {
+    console.log(url);
+    if (url === "https://jenkins.noredink.com/") {
+      authWindow.destroy();
+    }
+  }
+
+  authWindow.webContents.on("will-navigate", function(event, url) {
+    handleCallback(url);
+  });
+
+  authWindow.webContents.on("did-get-redirect-request", function(
+    event,
+    oldUrl,
+    newUrl
+  ) {
+    handleCallback(newUrl);
+  });
+
+  // Reset the authWindow on close
+  authWindow.on(
+    "close",
+    function() {
+      authWindow = null;
+      console.log("authWindow closed");
+    },
+    false
+  );
 }
 
 //
