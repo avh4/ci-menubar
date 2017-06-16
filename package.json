@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "electron main.js",
+    "start": "elm-make --yes Main.elm --output elm.js && electron main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aaron VonderHaar<gruen0aermel@gmail.com>",
