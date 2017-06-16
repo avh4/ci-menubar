@@ -20,5 +20,7 @@ ipcRenderer.send("jenkins-projects");
 const path = require("path");
 const Elm = require(path.resolve("elm.js"));
 const app = Elm.Main.fullscreen();
+
+app.ports.suggestions.send(["...not waiting anymore!"]);
 </script>
 </body>

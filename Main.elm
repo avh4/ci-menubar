@@ -1,4 +1,4 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Html
 
@@ -15,14 +15,14 @@ initialModel =
 
 
 type Msg
-    = NewTheString String
+    = NewTheString (List String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NewTheString string ->
-            ( { model | theString = string }
+        NewTheString strings ->
+            ( { model | theString = String.join "," strings }
             , Cmd.none
             )
 
@@ -32,6 +32,9 @@ main =
     Html.program
         { init = ( initialModel, Cmd.none )
         , update = update
-        , subscriptions = \model -> Sub.none
+        , subscriptions = \model -> suggestions NewTheString
         , view = \model -> Html.text model.theString
         }
+
+
+port suggestions : (List String -> msg) -> Sub msg
