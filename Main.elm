@@ -4,25 +4,30 @@ import Html
 
 
 type alias Model =
-    { theString : String
+    { jenkinsProjects : List JenkinsProject
+    }
+
+
+type alias JenkinsProject =
+    { name : String
     }
 
 
 initialModel : Model
 initialModel =
-    { theString = "Waiting..."
+    { jenkinsProjects = []
     }
 
 
 type Msg
-    = NewTheString (List String)
+    = NewJenkinsProjects (List JenkinsProject)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NewTheString strings ->
-            ( { model | theString = String.join "," strings }
+        NewJenkinsProjects projects ->
+            ( { model | jenkinsProjects = projects }
             , Cmd.none
             )
 
@@ -32,9 +37,9 @@ main =
     Html.program
         { init = ( initialModel, Cmd.none )
         , update = update
-        , subscriptions = \model -> suggestions NewTheString
-        , view = \model -> Html.text model.theString
+        , subscriptions = \model -> jenkinsProjects NewJenkinsProjects
+        , view = \model -> Html.text <| toString model
         }
 
 
-port suggestions : (List String -> msg) -> Sub msg
+port jenkinsProjects : (List JenkinsProject -> msg) -> Sub msg
