@@ -71,49 +71,44 @@ viewProject project =
         Just "yellow" ->
             Html.li [] <|
                 [ Html.text "Building..."
-                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
-                    [ Html.text project.name
-                    ]
+                , viewProjectLink project
                 ]
 
         Just "yellow_anime" ->
             Html.li [] <|
                 [ Html.text "Unstable"
-                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
-                    [ Html.text project.name
-                    ]
+                , viewProjectLink project
                 ]
 
         Just "blue" ->
             Html.li [] <|
                 [ Html.text "Success"
-                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
-                    [ Html.text project.name
-                    ]
+                , viewProjectLink project
                 ]
 
         Just "aborted" ->
             Html.li [] <|
                 [ Html.text "Aborted"
-                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
-                    [ Html.text project.name
-                    ]
+                , viewProjectLink project
                 ]
 
         Just "red" ->
             Html.li [] <|
                 [ Html.text "Failed"
-                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
-                    [ Html.text project.name
-                    ]
+                , viewProjectLink project
                 ]
 
         _ ->
             Html.li [] <|
-                [ Html.a [ Html.Events.onClick (OpenExternal project.url) ]
-                    [ Html.text project.name
-                    ]
+                [ viewProjectLink project
                 ]
+
+
+viewProjectLink : JenkinsProject -> Html Msg
+viewProjectLink project =
+    Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+        [ Html.text project.name
+        ]
 
 
 view : Model -> Html Msg
