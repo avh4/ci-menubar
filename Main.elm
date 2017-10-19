@@ -67,27 +67,60 @@ update msg model =
 
 viewProject : JenkinsProject -> Html Msg
 viewProject project =
-    Html.li [] <|
-        [ Html.a [ Html.Events.onClick (OpenExternal project.url) ]
-            [ Html.text project.name
-            ]
-        ]
+    case project.color of
+        Just "yellow" ->
+            Html.li [] <|
+                [ Html.text "Building..."
+                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+                    [ Html.text project.name
+                    ]
+                ]
 
+        Just "yellow_anime" ->
+            Html.li [] <|
+                [ Html.text "Unstable"
+                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+                    [ Html.text project.name
+                    ]
+                ]
 
-filterBuilds : JenkinsProject -> Bool
-filterBuilds project =
-    if project.color == Just "yellow_anime" then
-        True
-    else
-        False
+        Just "blue" ->
+            Html.li [] <|
+                [ Html.text "Success"
+                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+                    [ Html.text project.name
+                    ]
+                ]
+
+        Just "aborted" ->
+            Html.li [] <|
+                [ Html.text "Aborted"
+                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+                    [ Html.text project.name
+                    ]
+                ]
+
+        Just "red" ->
+            Html.li [] <|
+                [ Html.text "Failed"
+                , Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+                    [ Html.text project.name
+                    ]
+                ]
+
+        _ ->
+            Html.li [] <|
+                [ Html.a [ Html.Events.onClick (OpenExternal project.url) ]
+                    [ Html.text project.name
+                    ]
+                ]
 
 
 view : Model -> Html Msg
 view model =
     Html.div []
-        [ Html.h3 [] [ Html.text "Building" ]
+        [ Html.h3 [] [ Html.text "Building..." ]
         , model.jenkinsProjects
-            |> List.filter filterBuilds
             |> List.map viewProject
             |> Html.ul []
         ]
